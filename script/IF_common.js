@@ -313,8 +313,51 @@ var IF_common = {
         } else {
             clearTimeout(timer);
         }
+    },
+    /**
+     * 获得元素的左边位置
+     *
+     * @param   object  dom
+     * @return  int     左边位置
+     */
+    getOffsetLeft: function (dom) {
+        var val = 0;
+        while ( dom != null && dom != document.body ) {
+            val += dom.offsetLeft;
+            dom = dom.offsetParent;
+        }
+        return val;
+    },
+    /**
+     * 获得元素的上边位置
+     *
+     * @param   object  dom
+     * @return  int     上边位置
+     */
+    getOffsetTop: function (dom) {
+        var val = 0;
+        while ( dom != null && dom != document.body ) {
+            val += dom.offsetTop;
+            dom = dom.offsetParent;
+        }
+        return val;
+    },
+    /**
+     * 获得元素的位置
+     *
+     * @param   object  dom
+     * @return  object  位置对象
+     */
+    getOffset: function (dom) {
+        var t_val   = 0;
+        var l_val   = 0;
+        while ( dom != null && dom != document.body ) {
+            t_val  += dom.offsetTop;
+            l_val  += dom.offsetLeft;
+            dom     = dom.offsetParent;
+        }
+        return {top: t_val, left: l_val};
     }
-
 };
 
 /**
