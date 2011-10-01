@@ -43,7 +43,7 @@ var IF_common = {
             css = css[val];
         }
         return css;
-    }
+    },
     /**
      * 创建元素
      *
