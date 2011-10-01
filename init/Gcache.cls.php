@@ -80,7 +80,7 @@ class Gcache {
      */
     function getCacheFile($file_path, $cache_path = '') {
         $f          = pathinfo($file_path);
-        $hash_file  = str_replace('-', '', crc32($_SERVER['SCRIPT_URI'])).$f['filename'].'.html';
+        $hash_file  = str_replace('-', '', crc32($_SERVER['REQUEST_URI'])).$f['filename'].'.html';
         if ( empty($cache_path) ) {
             $cache_dir  = $f['dirname'].'/cache/';
             $mid_path   = substr($hash_file, 0, 2);
