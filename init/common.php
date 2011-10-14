@@ -18,3 +18,8 @@ include_once 'function.inc.php';    // 常用方法
 $last_dir = getLastDir(dirname(__file__));           // 获得上级目录
 include_once $last_dir.'/model/cls_mysql.php';   // mysql类
 $g_db = $db = new cls_mysql();
+
+// 模板缓存引擎
+include_once 'Gcache.cls.php';
+$Gc = new Gcache;
+$Gc->cache_time = 7200;
