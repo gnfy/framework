@@ -439,3 +439,41 @@ function setCacheToTT($tt_key, $value) {
         return false;
     }
 }
+
+/**
+ * 字符串转换成二进制
+ *
+ * 将字符串先转换成ASCII码对应的数字，之后再用ASCII的数字转换成二进制
+ * ASCII码最大的是254,转换成二进制最大是8位
+ *
+ * @param   string      $data   字符串源数据
+ *                              $data = fread(fopen($img, 'rb'), filesize($img));
+ * @return  bin                 二进制数据
+ */
+function strToBin ($data) { 
+    $len = strlen($data); 
+    $ret = '';
+    for ($i = 0; $i < $len; $i++) {
+        $val    = substr($data, $i, 1);
+        $asc    = ord($val);
+        $ret   .= sprintf("%08b", $asc);
+    }
+    return $ret; 
+}
+
+/**
+ * 二进制转换字符串
+ *
+ * @param   bin         $data   二进制源数据
+ * @return  string              字符串数据
+ */
+function binToStr($data){
+    $len    = strlen($data);
+    $ret    = '';
+    for ($i = 0; $i < $len; $i += 8) {
+        $val    = substr($data, $i, 8);
+        $asc    = bindec($val);
+        $ret   .= chr($asc);
+    }
+    return $ret;
+}
