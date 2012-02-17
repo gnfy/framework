@@ -62,6 +62,87 @@ var IF_common = {
         dom.parentNode.removeChild(dom);
     },
     /**
+     * 绑定事件
+     *
+     * @param   object      dom     要绑定事件的对象
+     * @param   string      type    要绑定事件的类型
+     * @param   function    fun     要绑定事件的方法
+     */
+    addEvent: function(dom, type, fun) {
+        if (dom.addEventListener) {
+            dom.addEventListener(type, fun, false);
+        } else {
+            dom.attachEvent('on' + type, fun);
+        }
+    },
+    /**
+     * 根据样式名称获得对象
+     *
+     * @param   string      val     样式名称
+     * @param   object      dom     限定的对象
+     * @param   string      tag     限定的标签名称
+     * @param   array               返回对应样式名称对象的数组
+     */
+    GCN: function(val, dom, tag) {
+        var dom = dom || window.document.body;
+        var _t  = tag || '*';
+        var ret = new Array();
+        if (document.getElementsByClassName) {
+            var nodes = dom.getElementsByClassName(val);
+            if (_t != '*') {
+                for (var i in nodes) {
+                    if ( node.tagName == _t.toUpperCase() ) {
+                        ret.push(nodes[i]);
+                    }
+                }
+            } else {
+                ret = nodes;
+            }
+        } else {
+            var classes = val.split(' ');
+            var _dom    = _t == '*' ? getChildNodes(dom) : GTN(tag, dom);
+            var patterns    = [];
+            for (var i in classes) {
+                patterns.push(eval('/(?:(^|\\s)' + classes[i] + '(\\s|$))/'));
+            }
+            for (var i = 0, _len = _dom.length; i < _len; i++) {
+                var match = false;
+                for (var a in patterns) {
+                    match = patterns[a].test(_dom[i].className);
+                    if (!match) break;
+                }
+                if (match) ret.push(_dom[i]);
+            }
+        }
+        return ret;
+    },
+    /**
+     * 获得一个节点下所有节点
+     *
+     * @param   object  _dom    源节点
+     * @return  array           所有子节点
+     */
+    getChildNodes: function(_dom) {
+        var _ele = new Array(), _dom = _dom || window.document.body;
+        /**
+         * 获得子节点
+         *
+         * @param   object  _dom    源
+         */
+        function getNodesItem(_dom) {
+            _ele.push(_dom);
+            var _child = _dom.childNodes;
+            for (var i = 0, _max = _child.length; i < _max; i++) {
+                if (_child[i].nodeType == 1) {
+                    getNodesItem(_child[i]);
+                }
+            }
+        }
+        getNodesItem(_dom);
+        _ele.shift();
+        return _ele;
+    },
+    /**
      * 在某元素后面添加元素
      *
      * @param   object  new_dom 要添加的元素
