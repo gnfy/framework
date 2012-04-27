@@ -1,6 +1,12 @@
 <?php
 /**
- * 共同文件
+ * ********************************************
+ * Description   : 公用文件
+ * Filename      : common.php
+ * Create time   : 2012-04-27 10:22:35
+ * Last modified : 2012-04-27 10:22:35
+ * License       : MIT, GPL
+ * ********************************************
  */
 Header("Content-Type:text/html;charset=utf-8");
 //set_include_path(get_include_path() . PATH_SEPARATOR . 'init/'); // 包含路径
