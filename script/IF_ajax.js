@@ -84,6 +84,8 @@ var IF_ajax = (function(){
             }
         }
         xmlhttp.open(method, url, async);
+        // 设置ajax请求头标识
+        xmlhttp.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
         if ( method == 'POST' ) {
             xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded;charset=' + encode);
         } else {
