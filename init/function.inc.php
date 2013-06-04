@@ -134,7 +134,14 @@ function getRandCode( $length = 4 ) {
  */
 
 function makeDir($path, $mod = 0777) {
-    
+    if (stripos(PHP_OS, 'win') === false) {
+        $cmd  = 'mkdir -p '.$path;
+    } else {
+        $path = str_replace('/', '\\', $path);
+        $cmd  = 'mkdir '.$path;
+    }   
+    exec($cmd);
+    /*
     if ($path == '.' || $path == '..') return false;
     $path = str_replace('\\', '/', $path);
     $dir = '';
@@ -148,6 +155,7 @@ function makeDir($path, $mod = 0777) {
             @chmod($dir, $mod);
         }
     }
+     */
     return true;
 }
 
