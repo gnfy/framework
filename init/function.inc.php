@@ -173,7 +173,7 @@ function getZoomSize( $picurl, $w = 200, $h=200 ) {
     
     }
     
-    if ( $size[0] * $h / $w > $size[1] ) { // 尺寸超标
+    if ( $w /$h > $size[0] / $size[1] ) { // 尺寸超标
         
         $data[0] = $h * $size[0] / $size[1];
         $data[1] = $h;
@@ -221,7 +221,7 @@ function getThumbSize($param) {
             return $data = $size;
         }
 
-        if ( $size[0] * $h / $w > $size[1] ) { // 尺寸超标
+        if ( $w / $h > $size[0] / $size[1] ) { // 尺寸超标
             $data[0] = $h * $size[0] / $size[1];
             $data[1] = $h;
         } else {
