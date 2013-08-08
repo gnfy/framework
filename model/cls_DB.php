@@ -20,6 +20,8 @@ class cls_DB {
     public $flag = 'master';
     // 数据库节点
     public $node = 0;
+    // 上一次执行的sql
+    private $lastsql;
 
     /**
      * @功能：构造函数
@@ -116,7 +118,7 @@ class cls_DB {
      * @param   int     $type   1：写入，2：替换，3：删除，4：修改，5：查询(单条), 6：查询(多条)
      * @return  mix     生成好的SQL,或报错
      */
-    function getSQL($data, $type) {
+    private function makeSql($data, $type) {
         $t = strtolower($type);
         $sql = '';
         if ($t == 'insert') {
@@ -147,8 +149,16 @@ class cls_DB {
         if ($this->sql_debug == true) {
             echo $sql."<hr />\r\n";
         }
+        $this->lastsql = $sql;
         $this->mysqlPing($this->dbh);
         return $sql;
+    }
+
+    /**
+     * 获得上一次执行的SQL
+     */
+    public function getLastSql() {
+        return $this->lastsql;
     }
     
     /**
@@ -165,7 +175,7 @@ class cls_DB {
         }
         $data['key'] = $key;
         $data['val'] = $val;
-        $sql    = $this->getSQL($data, 'insert');
+        $sql    = $this->makeSql($data, 'insert');
         $data   = null;
         if ( mysql_query($sql, $this->dbh) ) {
             return mysql_insert_id();
@@ -189,7 +199,7 @@ class cls_DB {
         }
         $data['key'] = $key;
         $data['val'] = $val;
-        $sql = $this->getSQL($data, 'replace');
+        $sql = $this->makeSql($data, 'replace');
         $data = null;
         //$sql = 'REPLACE INTO '.$this->table.' ('.implode(',', $key).')VALUES('.implode(',', $val).');'; // 构造SQL
         if (mysql_query($sql, $this->dbh))
@@ -227,7 +237,7 @@ class cls_DB {
         
         //$sql = empty($this->sql) ? 'DELETE FROM '.$this->table.$this->get_where($param) : $this->sql;
 
-        $sql    = $this->getSQL($param, 'delete');
+        $sql    = $this->makeSql($param, 'delete');
         $param  = null;
             
         if ( mysql_query($sql, $this->dbh) ) {
@@ -254,7 +264,7 @@ class cls_DB {
                 'where' => $where
             );
         //$sql = empty($this->sql) ? 'UPDATE '.$this->table.' SET '.implode(',', $val).$this->get_where($where) : $this->sql;
-        $sql    = $this->getSQL($data, 'update');
+        $sql    = $this->makeSql($data, 'update');
 
         $data   = null;
         $param  = null;
@@ -289,7 +299,7 @@ class cls_DB {
                 'where'     => $param['where']
             );
 
-        $sql    = $this->getSQL($data, 'getone');
+        $sql    = $this->makeSql($data, 'getone');
 
         $data   = null;
         $param  = null;
@@ -350,7 +360,7 @@ class cls_DB {
                 'where'     => empty($param['where']) ? '' : $param['where']
             );
 
-        $sql = $this->getSQL($data, 'getall');
+        $sql = $this->makeSql($data, 'getall');
         $data = null;
         $param = null;
 
@@ -377,10 +387,10 @@ class cls_DB {
      * @return  null
      */
     function begin($param) {
-        $sql    = $this->getSQL('', 'begin');
+        $sql    = $this->makeSql('', 'begin');
         mysql_query($sql, $this->dbh);
         $p      = intval($param);
-        $sql    = $this->getSQL($p, 'autocommit');
+        $sql    = $this->makeSql($p, 'autocommit');
         mysql_query($sql, $this->dbh);
     }
 
@@ -391,7 +401,7 @@ class cls_DB {
      * @return  null
      */
     function commit() {
-        $sql    = $this->getSQL('', 'commit');
+        $sql    = $this->makeSql('', 'commit');
         mysql_query($sql, $this->dbh);
     }
 
@@ -402,7 +412,7 @@ class cls_DB {
      * @param   null
      */
     function rollback() {
-        $sql    = $this->getSQL('', 'rollback');
+        $sql    = $this->makeSql('', 'rollback');
         mysql_query($sql, $this->dbh);
     }
 
