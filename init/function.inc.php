@@ -489,3 +489,44 @@ function binToStr($data){
     }
     return $ret;
 }
+
+/**
+ * 分词
+ *
+ * @param   string  $str
+ * @return  array
+ */
+function split_word($str) {
+    $arr    = array();
+    $word   = ''; 
+    for ( $i=0, $max = strlen( $str ); $i < $max; ){
+        $split  = 1;
+        $val = ord($str[$i]);
+        if ( $val > 127 ) { 
+            if ( $val >= 192 && $val <= 223 ) { 
+                $split  = 2;
+            } else if ( $val >= 224 && $val <= 239) {
+                $split  = 3;
+            } else if ( $val >= 240 && $val <= 247 ) { 
+                $split  = 4;
+            }   
+        }   
+        if ( $split > 1 ) { 
+            if ( $word ) { 
+                array_search($word, $arr) == false ? array_push($arr, $word) : ''; 
+                $word   = ''; 
+            }   
+            $tmp    = substr($str, $i, $split);
+            array_search($tmp, $arr) === false ? array_push($arr, $tmp) : ''; 
+        } else {
+            $word   .= substr($str, $i, $split);
+        }
+        $i  += $split;
+        // 临界值处理
+        if ($i == $max && $word) {
+            array_search($word, $arr) == false ? array_push($arr, $word) : '';
+            $word   = '';
+        }
+    }
+    return $arr;
+}
