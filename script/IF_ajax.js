@@ -24,7 +24,7 @@ var IF_ajax = (function(){
      */
     function create() {
         var xmlhttp = null;
-        if (window.XMLHttpRequest) {
+        if ( typeof XMLHttpRequest !== 'undefined' ) {
             xmlhttp = new XMLHttpRequest();
         } else {
             var ver_arr = ['Microsoft.XMLHTTP', 'MSXML6.XMLHTTP', 'MSXML5.XMLHTTP', 'MSXML4.XMLHTTP', 'MSXML3.XMLHTTP', 'MSXML2.XMLHTTP', 'MSXML.XMLHTTP'];
@@ -46,7 +46,7 @@ var IF_ajax = (function(){
     function request(obj) {
         function fn(){}
         obj = obj || {};
-        var url     = obj.url       || window.location.toString(),
+        var url     = obj.url       || location.toString(),
             method  = obj.method    || 'GET',
             data    = obj.data      || null,
             dataType= obj.dataType  || 'text',
