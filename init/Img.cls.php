@@ -97,7 +97,10 @@ class Img {
         $this->thumbImage($param);
         $color_arr  = array();
         $sum        = 0;
-        $img    = self::getInstance();
+        $img        = self::getInstance();
+        // 获得图片真实的高宽
+        $w          = $img->width;
+        $h          = $img->height;
         for ($i = 0; $i < $w; $i++) {
             for ($j = 0; $j < $h; $j++) {
                 $pixel  = $img->getImagePixelColor($i, $j);
