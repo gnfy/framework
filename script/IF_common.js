@@ -3,7 +3,7 @@
  * Description   : 公共js脚本
  * Filename      : IF_common.js
  * Create time   : 2013-10-14 18:48:40
- * Last modified : 2013-10-14 18:48:59
+ * Last modified : 2013-10-14 19:07:25
  * License       : BSD, GPL
  * ********************************************
  */
