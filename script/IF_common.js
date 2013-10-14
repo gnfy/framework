@@ -304,6 +304,19 @@ var IF_common = {
         return Date.parse(d)/1000;;
     },
     /**
+     * 获得下N个自然天的unix时间
+     *
+     * @param   int     val
+     * @return  int
+     */
+    getNextDayTime  : function(val) {
+        var date            = new Date(),
+            now_time        = Date.parse(date.toDateString()),
+            val             = parseInt(val),
+            next_day_time   = now_time + (86400000 * val);
+        return next_day_time;
+    },
+    /**
      * 动态加载js
      *
      * @param   string  url     要加载的地址
