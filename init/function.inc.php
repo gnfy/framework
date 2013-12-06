@@ -4,7 +4,7 @@
  * Description   : 常用方法
  * Filename      : function.inc.php
  * Create time   : 2012-04-27 10:14:35
- * Last modified : 2013-12-06 11:48:01
+ * Last modified : 2013-12-06 12:47:26
  * License       : MIT, GPL
  * ********************************************
  */
