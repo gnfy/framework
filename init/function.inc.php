@@ -530,3 +530,29 @@ function split_word($str) {
     }
     return $arr;
 }
+
+/**
+ * 将输出的内容中本站的静态资源(css/js)更新版本号
+ *
+ * @param   string  $content    要输出的内容
+ * @return  string              加上版本号后的内容
+ */
+function updateVersion($content) {
+    if ( $content ) {
+        $base_dir       = dirname(dirname(__FILE__));
+        $replace_domain = array ('http://www.test.com');
+        // 匹配出样式和js
+        preg_match_all('/(href|src)=((\'|")(.*?\.(?:css|js))(?:\?.*?)?\3)/i', $content, $_arr);
+        if ( isset($_arr[4]) ) {
+            foreach ( $_arr[4] AS $k => $v) {
+                $filename   = $base_dir.str_replace($replace_domain, '', $v); 
+                if ( file_exists($filename) ) {
+                    // 根据文件修改时间添加对应版本号
+                    $newfile    = $_arr[3][$k].$v.'?v='.filemtime($filename).$_arr[3][$k];
+                    $content    = str_replace($_arr[2][$k], $newfile, $content);
+                }    
+            }    
+        }    
+    }    
+    return $content;
+}
