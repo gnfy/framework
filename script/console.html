@@ -55,11 +55,18 @@
         </script>
     </head>
     <body>
-        <div>console.log测试</div>
-        <input type="button"  value="Time" class="btn" id="time_btn" data-value="10000"/>
-        <input type="button"  value="Time" class="btn" data-value="1000000"/>
+        <h3>console测试</h3>
+        <input type="button"  value="Time" class="time_btn" data-value="10000"/>
+        <input type="button"  value="Time" class="time_btn" data-value="1000000"/>
+        <input type="button"  value="table" class="table_btn"/>
+        <input type="button"  value="error/warning" class="ew_btn"/>
+        <input type="button"  value="log" class="log_btn"/>
+        <input type="button"  value="dir" class="dir_btn"/>
+        <input type="button"  value="asset" class="asset_btn"/>
+        <input type="button"  value="profile" class="profile_btn" data-value="1000000"/>
+        <input type="button"  value="debug" class="debug_btn"/>
         <script>
-            $('.btn').bind('click', function() {
+            $('.time_btn').bind('click', function() {
                 var val = parseInt($(this).attr('data-value'));
                 console.time('Array('+val+') init');
                 var array = new Array(val);
@@ -67,6 +74,43 @@
                     array[i] = new Object();
                 };
                 console.timeEnd('Array('+val+') init');
+            });
+            $('.table_btn').bind('click', function() {
+                var languages = {
+                    csharp: { name: "C#", paradigm: "object-oriented" },
+                    fsharp: { name: "F#", paradigm: "functional" }
+                };
+                console.table(languages);
+            });
+            $('.ew_btn').bind('click', function() {
+                console.error("Error: %s (%i)", "Server is not responding",500)
+                console.warn('Warning! Too few nodes (%d)', document.childNodes.length)
+            });
+            $('.log_btn').bind('click', function() {
+                console.log(" %s + %s = %s", 1, 1, 2);
+                console.log("%cabcd", 'color:#f00');
+            });
+            $('.dir_btn').bind('click', function() {
+                console.dir({foo: 'bar'})
+            });
+            $('.asset_btn').bind('click', function() {
+                console.assert(true === false,"判断条件不成立")
+            });
+            $('.profile_btn').bind('click', function() {
+                var val = parseInt($(this).attr('data-value'));
+                console.profile('Array('+val+') init');
+                var array = new Array(val);
+                for (var i = array.length - 1; i >= 0; i--) {
+                    array[i] = new Object();
+                };
+                //console.profileEnd('Array('+val+') init');
+                console.profileEnd();
+            });
+            $('.debug_btn').bind('click', function() {
+                for(var i = 0;i<5;i++){
+                    console.log(i);
+                    if (i===2) debugger;
+                }
             });
         </script>
     </body>
