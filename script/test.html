@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>console test</title>
+        <script>
+            (function() {
+                var query = function (val) {
+                    return new query.fn.init(val);
+                }
+                query.fn = query.prototype = {
+                    init    : function(val) {
+                        if ( val.nodeType ) {
+                            this.length = 1;
+                            this[0] = val;
+                        } else {
+                            this.setArray(document.querySelectorAll(val));
+                        }
+                        return this;
+                    },
+                    bind    : function(type, func) {
+                        for (var i = 0; i < this.length; i++) {
+                            var dom = this[i];
+                            if (dom.addEventListener) {
+                                dom.addEventListener(type, func, false);
+                            } else {
+                                dom.attachEvent('on' + type, func);
+                            }
+                        }
+                    },
+                    log     : function(val) {
+                        console.log(val);
+                    },
+                    setArray    : function(val) {
+                        this.length = 0;
+                        Array.prototype.push.apply(this, val);
+                        return this;
+                    },
+                    attr    : function(name, val) {
+                        for (var i = 0; i < this.length; i++) {
+                            var dom = this[i];
+                            if (val) {
+                                dom.setAttribute(name, val);
+                            } else {
+                                return dom.getAttribute(name);
+                            }
+                        }
+                        return this;
+                    },
+                    'version'   : '0.1'
+                };
+                query.fn.init.prototype = query.fn;
+                window.query = window.$ = query;
+            })();
+        </script>
+    </head>
+    <body>
+        <div>console.log测试</div>
+        <input type="button"  value="Time" class="btn" id="time_btn" data-value="10000"/>
+        <input type="button"  value="Time" class="btn" data-value="1000000"/>
+        <script>
+            $('.btn').bind('click', function() {
+                var val = parseInt($(this).attr('data-value'));
+                console.time('Array('+val+') init');
+                var array = new Array(val);
+                for (var i = array.length - 1; i >= 0; i--) {
+                    array[i] = new Object();
+                };
+                console.timeEnd('Array('+val+') init');
+            });
+        </script>
+    </body>
+</html>
